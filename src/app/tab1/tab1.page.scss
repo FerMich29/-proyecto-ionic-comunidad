@@ -1,0 +1,234 @@
+:host {
+  display: block;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 1.25rem;
+  color: #2c3e50;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem 1.25rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #666;
+    margin-bottom: 0.35rem;
+  }
+
+  input, select {
+    padding: 0.65rem 0.75rem;
+    border: 1px solid #dcdfe4;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #2c3e50;
+    background: #f9fafb;
+    transition: border-color 150ms, box-shadow 150ms;
+
+    &:focus {
+      outline: none;
+      border-color: #6c5ce7;
+      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+      background: white;
+    }
+  }
+
+  select[multiple] {
+    height: auto;
+  }
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.badge {
+  display: inline-block;
+  background: #6c5ce7;
+  color: white;
+  font-size: 0.75rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  margin-left: 0.3rem;
+}
+
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+
+  input[type="color"] {
+    width: 48px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .color-value {
+    font-size: 0.85rem;
+    color: #666;
+  }
+}
+
+.checkbox-group {
+  justify-content: center;
+}
+
+.checkbox-label, .radio-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  color: #2c3e50;
+  cursor: pointer;
+
+  input {
+    width: 16px;
+    height: 16px;
+    accent-color: #6c5ce7;
+  }
+}
+
+.radio-row {
+  display: flex;
+  gap: 1.25rem;
+}
+
+.botonera {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 0.7rem 1.6rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: none;
+  cursor: pointer;
+  transition: opacity 150ms;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.btn-primary {
+  background: #6c5ce7;
+  color: white;
+}
+
+.btn-secondary {
+  background: #f1f2f6;
+  color: #2c3e50;
+}
+
+.perfil-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.perfil-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.perfil-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+
+  strong {
+    color: #2c3e50;
+    font-size: 0.95rem;
+  }
+
+  .perfil-email {
+    font-size: 0.8rem;
+    color: #888;
+  }
+}
+
+.badge-premium {
+  font-size: 0.7rem;
+  color: #e67e22;
+  font-weight: 600;
+}
+
+.perfil-acciones {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.btn-chip {
+  border: none;
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 150ms;
+
+  &:hover {
+    opacity: 0.85;
+  }
+}
+
+.btn-chip.edit {
+  background: #dfe6ff;
+  color: #4054b2;
+}
+
+.btn-chip.toggle {
+  background: #fff3d6;
+  color: #b5860a;
+}
+
+.btn-chip.delete {
+  background: #ffe0e0;
+  color: #c0392b;
+}
+
+.empty-state {
+  text-align: center;
+  color: #999;
+  font-size: 0.85rem;
+  padding: 1rem 0;
+}
+
+@media (max-width: 600px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
