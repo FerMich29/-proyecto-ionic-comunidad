@@ -3,24 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
-import axios from 'axios';
-
-interface Perfil {
-  id?: number;
-  fullname: string;
-  password: string;
-  email: string;
-  phonenumber: string;
-  web: string;
-  birthdate: string;
-  siblings: number;
-  earnings: number;
-  color: string;
-  premium: boolean | number;
-  genre: string;
-  studies: string;
-  languages: string[] | string;
-}
+import { Perfil } from '../models/perfil.model';
+import { PerfilService } from '../services/perfil.service';
 
 @Component({
   selector: 'app-tab1',
@@ -31,14 +15,14 @@ interface Perfil {
 })
 export class Tab1Page implements OnInit {
 
-  // 👇 AQUÍ VA LA URL DE TU API
-  private API_URL = 'http://localhost/miapi/perfil.php';
-
   perfiles: any[] = [];
   editingId: number | null = null;
   form: Perfil = this.emptyForm();
 
-  constructor(private alertController: AlertController) {}
+  constructor(
+    private alertController: AlertController,
+    private perfilService: PerfilService   // 👈 nuevo: inyectamos el servicio
+  ) {}
 
   ngOnInit() {
     this.loadPerfiles();
@@ -64,25 +48,22 @@ export class Tab1Page implements OnInit {
 
   async loadPerfiles() {
     try {
-      const res = await axios.get(this.API_URL);
-      this.perfiles = res.data.data;
+      // antes: const res = await axios.get(this.API_URL); this.perfiles = res.data.data;
+      this.perfiles = await this.perfilService.obtenerTodos();
     } catch (err) {
       this.showAlert('Error', 'No se pudo cargar la lista de perfiles', 'danger');
     }
   }
 
   async submitForm() {
-    const payload = {
-      ...this.form,
-      languages: Array.isArray(this.form.languages) ? this.form.languages.join(',') : this.form.languages,
-    };
-
     try {
       if (this.editingId) {
-        await axios.put(`${this.API_URL}?id=${this.editingId}`, payload);
+        // antes: await axios.put(`${this.API_URL}?id=${this.editingId}`, payload);
+        await this.perfilService.actualizar(this.editingId, this.form);
         await this.showAlert('Éxito', 'Perfil actualizado correctamente', 'success');
       } else {
-        await axios.post(this.API_URL, payload);
+        // antes: await axios.post(this.API_URL, payload);
+        await this.perfilService.crear(this.form);
         await this.showAlert('Éxito', 'Perfil creado correctamente', 'success');
       }
       this.resetForm();
@@ -103,7 +84,8 @@ export class Tab1Page implements OnInit {
 
   async togglePremium(perfil: any) {
     try {
-      await axios.patch(`${this.API_URL}?id=${perfil.id}`, {
+      // antes: await axios.patch(`${this.API_URL}?id=${perfil.id}`, { premium: ... });
+      await this.perfilService.actualizarParcial(perfil.id, {
         premium: perfil.premium == 1 ? 0 : 1,
       });
       await this.showAlert('Éxito', 'Estado premium actualizado', 'success');
@@ -116,7 +98,8 @@ export class Tab1Page implements OnInit {
   async deletePerfil(id: number | undefined) {
     if (!id) return;
     try {
-      await axios.delete(`${this.API_URL}?id=${id}`);
+      // antes: await axios.delete(`${this.API_URL}?id=${id}`);
+      await this.perfilService.eliminar(id);
       await this.showAlert('Éxito', 'Perfil eliminado', 'success');
       this.loadPerfiles();
     } catch (err) {

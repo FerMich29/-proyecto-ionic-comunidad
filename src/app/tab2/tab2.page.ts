@@ -1,66 +1,40 @@
-import { Component, OnInit, inject } from '@angular/core';
-import {
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonFab,
-  IonFabButton,
-  IonIcon,
-  ActionSheetController,
-} from '@ionic/angular';
-import { addIcons } from 'ionicons';
-import { camera, trash, close } from 'ionicons/icons';
-import type { UserPhoto } from '../services/photo.service';
-import { PhotoService } from '../services/photo.service';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular';
+import { PerfilService } from '../services/perfil.service';
 
 @Component({
   selector: 'app-tab2',
   templateUrl: 'tab2.page.html',
   styleUrls: ['tab2.page.scss'],
-  imports: [IonHeader, IonToolbar, IonTitle, IonContent, IonGrid, IonRow, IonCol, IonFab, IonFabButton, IonIcon],
+  standalone: true,
+  imports: [IonHeader, IonToolbar, IonTitle, IonContent, CommonModule, FormsModule],
 })
 export class Tab2Page implements OnInit {
-  public photoService = inject(PhotoService);
-  private actionSheetController = inject(ActionSheetController);
 
-  constructor() {
-    addIcons({ camera, trash, close });
+  todos: any[] = [];
+  filtrados: any[] = [];
+  busqueda: string = '';
+
+  constructor(private perfilService: PerfilService) {}  // 👈 nuevo
+
+  ngOnInit() {
+    this.cargar();
   }
 
-  async ngOnInit() {
-    await this.photoService.loadSaved();
+  async cargar() {
+    try {
+      // antes: const res = await axios.get(this.API_URL); this.todos = res.data.data;
+      this.todos = await this.perfilService.obtenerTodos();
+      this.filtrados = this.todos;
+    } catch (err) {
+      console.error(err);
+    }
   }
 
-  addPhotoToGallery() {
-    this.photoService.addNewToGallery();
-  }
-
-  public async showActionSheet(photo: UserPhoto, position: number) {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Photos',
-      buttons: [
-        {
-          text: 'Delete',
-          role: 'destructive',
-          icon: 'trash',
-          handler: () => {
-            this.photoService.deletePhoto(photo, position);
-          },
-        },
-        {
-          text: 'Cancel',
-          icon: 'close',
-          role: 'cancel',
-          handler: () => {
-            // Nothing to do, action sheet is automatically closed
-          },
-        },
-      ],
-    });
-    await actionSheet.present();
+  buscar() {
+    // antes: filtro manual con .filter() aquí mismo
+    this.filtrados = this.perfilService.filtrarPorNombre(this.todos, this.busqueda);
   }
 }

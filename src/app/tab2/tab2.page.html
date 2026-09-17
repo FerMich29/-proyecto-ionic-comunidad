@@ -1,31 +1,29 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Photo Gallery </ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Buscar en el Directorio</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Photo Gallery</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="card">
+    <input
+      type="text"
+      class="search-input"
+      placeholder="Buscar por nombre..."
+      [(ngModel)]="busqueda"
+      (input)="buscar()"
+    />
 
-  <ion-grid>
-    <ion-row>
-      @for (photo of photoService.photos(); track photo.filepath; let position = $index) {
-      <ion-col size="6">
-        <button (click)="showActionSheet(photo, position)">
-          <img [src]="photo.webviewPath" [attr.alt]="'Photo ' + (position + 1)" loading="lazy" />
-        </button>
-      </ion-col>
-      }
-    </ion-row>
-  </ion-grid>
+    <div class="perfil-list">
+      <div *ngFor="let p of filtrados" class="perfil-card">
+        <div class="perfil-info">
+          <strong>{{ p.fullname }}</strong>
+          <span class="perfil-email">{{ p.email }}</span>
+          <span *ngIf="p.premium == 1" class="badge-premium">⭐ Destacado</span>
+        </div>
+      </div>
 
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
-    <ion-fab-button (click)="addPhotoToGallery()">
-      <ion-icon name="camera"></ion-icon>
-    </ion-fab-button>
-  </ion-fab>
+      <p *ngIf="filtrados.length === 0" class="empty-state">No se encontraron resultados.</p>
+    </div>
+  </div>
 </ion-content>

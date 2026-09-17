@@ -1,16 +1,59 @@
-ion-col > button {
-  display: block;
-  width: 100%;
-  background: none;
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  font: inherit;
+:host { display: block; }
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
 }
 
-button img {
-  display: block;
+.search-input {
   width: 100%;
-  height: auto;
+  padding: 0.75rem 1rem;
+  border: 1px solid #dcdfe4;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+  box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+    border-color: #6c5ce7;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+  }
+}
+
+.perfil-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.perfil-card {
+  padding: 0.9rem 1rem;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  background: #fafafa;
+}
+
+.perfil-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+
+  strong { color: #2c3e50; font-size: 0.95rem; }
+  .perfil-email { font-size: 0.8rem; color: #888; }
+}
+
+.badge-premium {
+  font-size: 0.7rem;
+  color: #e67e22;
+  font-weight: 600;
+}
+
+.empty-state {
+  text-align: center;
+  color: #999;
+  font-size: 0.85rem;
+  padding: 1rem 0;
 }

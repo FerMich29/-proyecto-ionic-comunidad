@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonContent } from '@ionic/angular';
 import { Router } from '@angular/router';
-import axios from 'axios';
 import anime from 'animejs';
+import { UsuarioService } from '../services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -22,10 +22,11 @@ export class LoginPage implements OnInit {
 
   private currentAnim: anime.AnimeInstance | null = null;
 
-  // 👇 AQUÍ VA LA URL DE TU API DE LOGIN (XAMPP)
-  private API_URL = 'http://localhost/miapi/login.php';
-
-  constructor(private router: Router) {}
+  // 👇 ya no necesitas la URL aquí, vive dentro de UsuarioService
+  constructor(
+    private router: Router,
+    private usuarioService: UsuarioService   // 👈 nuevo: inyectamos el servicio
+  ) {}
 
   ngOnInit() {}
 
@@ -44,13 +45,10 @@ export class LoginPage implements OnInit {
     this.animatePath(-730, '530 1386');
 
     try {
-      const response = await axios.post(this.API_URL, {
-        email: this.email,
-        password: this.password,
-      });
+      // antes: const response = await axios.post(this.API_URL, { email, password });
+      const response = await this.usuarioService.login(this.email, this.password);
 
-      // Ajusta esto según lo que devuelva TU api
-      if (response.data.success) {
+      if (response.success) {
         this.router.navigateByUrl('/tabs/tab1');
       } else {
         this.error = 'Usuario o contraseña incorrectos';
