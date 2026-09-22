@@ -17,9 +17,13 @@ export class Tab2Page implements OnInit {
   filtrados: any[] = [];
   busqueda: string = '';
 
-  constructor(private perfilService: PerfilService) {}  // 👈 nuevo
+  constructor(private perfilService: PerfilService) { }  // 👈 nuevo
 
   ngOnInit() {
+    this.cargar();
+  }
+
+  ionViewWillEnter() {
     this.cargar();
   }
 

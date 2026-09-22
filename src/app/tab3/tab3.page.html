@@ -1,17 +1,47 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Mis Favoritos</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="card">
+    <h2 class="card-title">{{ editingId ? '✏️ Editar favorito' : '⭐ Agregar favorito' }}</h2>
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+    <form (ngSubmit)="guardar()" class="form-grid">
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" name="nombre" [(ngModel)]="form.nombre" placeholder="Nombre del miembro" required />
+      </div>
+
+      <div class="form-group full-width">
+        <label>Nota</label>
+        <input type="text" name="nota" [(ngModel)]="form.nota" placeholder="¿Por qué es tu favorito?" />
+      </div>
+
+      <div class="form-group full-width botonera">
+        <button type="submit" class="btn-primary">{{ editingId ? 'Guardar cambios' : 'Agregar' }}</button>
+        <button type="button" class="btn-secondary" (click)="resetForm()">Cancelar</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card">
+    <h2 class="card-title">📌 Guardados en este dispositivo</h2>
+
+    <div class="perfil-list">
+      <div *ngFor="let f of favoritos" class="perfil-card">
+        <div class="perfil-info">
+          <strong>{{ f.nombre }}</strong>
+          <span class="perfil-email">{{ f.nota }}</span>
+        </div>
+        <div class="perfil-acciones">
+          <button class="btn-chip edit" (click)="editar(f)">Editar</button>
+          <button class="btn-chip delete" (click)="eliminar(f.id)">Eliminar</button>
+        </div>
+      </div>
+
+      <p *ngIf="favoritos.length === 0" class="empty-state">Aún no tienes favoritos guardados.</p>
+    </div>
+  </div>
 </ion-content>

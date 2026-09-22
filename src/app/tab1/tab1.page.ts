@@ -22,9 +22,12 @@ export class Tab1Page implements OnInit {
   constructor(
     private alertController: AlertController,
     private perfilService: PerfilService   // 👈 nuevo: inyectamos el servicio
-  ) {}
+  ) { }
+  async ngOnInit() {
+    await this.loadPerfiles();
+  }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.loadPerfiles();
   }
 
