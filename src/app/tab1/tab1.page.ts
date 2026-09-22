@@ -16,8 +16,7 @@ import { PerfilService } from '../services/perfil.service';
 })
 export class Tab1Page implements OnInit {
 
-  private CACHE_KEY = 'perfiles_cache'; // 👈 nueva "cajita" de respaldo local
-
+  private CACHE_KEY = 'perfiles_cache';
   perfiles: any[] = [];
   editingId: number | null = null;
   form: Perfil = this.emptyForm();
