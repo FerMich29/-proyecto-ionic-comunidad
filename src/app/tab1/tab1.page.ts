@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
+import { Preferences } from '@capacitor/preferences';
 import { Perfil } from '../models/perfil.model';
 import { PerfilService } from '../services/perfil.service';
 
@@ -15,14 +16,18 @@ import { PerfilService } from '../services/perfil.service';
 })
 export class Tab1Page implements OnInit {
 
+  private CACHE_KEY = 'perfiles_cache'; // 👈 nueva "cajita" de respaldo local
+
   perfiles: any[] = [];
   editingId: number | null = null;
   form: Perfil = this.emptyForm();
 
   constructor(
     private alertController: AlertController,
-    private perfilService: PerfilService   // 👈 nuevo: inyectamos el servicio
+    private perfilService: PerfilService,
+    private cdr: ChangeDetectorRef
   ) { }
+
   async ngOnInit() {
     await this.loadPerfiles();
   }
@@ -51,26 +56,42 @@ export class Tab1Page implements OnInit {
 
   async loadPerfiles() {
     try {
-      // antes: const res = await axios.get(this.API_URL); this.perfiles = res.data.data;
+      // 1. Intenta traer los datos frescos de la API
       this.perfiles = await this.perfilService.obtenerTodos();
+
+      // 2. Si funcionó, guarda una copia local de respaldo
+      await Preferences.set({
+        key: this.CACHE_KEY,
+        value: JSON.stringify(this.perfiles),
+      });
     } catch (err) {
-      this.showAlert('Error', 'No se pudo cargar la lista de perfiles', 'danger');
+      // 3. Si la API falló (ej. XAMPP apagado), intenta usar la copia guardada
+      const { value } = await Preferences.get({ key: this.CACHE_KEY });
+      if (value) {
+        this.perfiles = JSON.parse(value);
+        this.showAlert(
+          'Sin conexión',
+          'No se pudo conectar al servidor. Mostrando la última información guardada en este dispositivo.',
+          'danger'
+        );
+      } else {
+        this.showAlert('Error', 'No se pudo cargar la lista de perfiles', 'danger');
+      }
     }
+    this.cdr.detectChanges();
   }
 
   async submitForm() {
     try {
       if (this.editingId) {
-        // antes: await axios.put(`${this.API_URL}?id=${this.editingId}`, payload);
         await this.perfilService.actualizar(this.editingId, this.form);
         await this.showAlert('Éxito', 'Perfil actualizado correctamente', 'success');
       } else {
-        // antes: await axios.post(this.API_URL, payload);
         await this.perfilService.crear(this.form);
         await this.showAlert('Éxito', 'Perfil creado correctamente', 'success');
       }
       this.resetForm();
-      this.loadPerfiles();
+      await this.loadPerfiles();
     } catch (err: any) {
       const msg = err?.response?.data?.message || 'Ocurrió un error al guardar el perfil';
       this.showAlert('Error', msg, 'danger');
@@ -87,12 +108,11 @@ export class Tab1Page implements OnInit {
 
   async togglePremium(perfil: any) {
     try {
-      // antes: await axios.patch(`${this.API_URL}?id=${perfil.id}`, { premium: ... });
       await this.perfilService.actualizarParcial(perfil.id, {
         premium: perfil.premium == 1 ? 0 : 1,
       });
       await this.showAlert('Éxito', 'Estado premium actualizado', 'success');
-      this.loadPerfiles();
+      await this.loadPerfiles();
     } catch (err) {
       this.showAlert('Error', 'No se pudo actualizar el estado premium', 'danger');
     }
@@ -101,10 +121,9 @@ export class Tab1Page implements OnInit {
   async deletePerfil(id: number | undefined) {
     if (!id) return;
     try {
-      // antes: await axios.delete(`${this.API_URL}?id=${id}`);
       await this.perfilService.eliminar(id);
       await this.showAlert('Éxito', 'Perfil eliminado', 'success');
-      this.loadPerfiles();
+      await this.loadPerfiles();
     } catch (err) {
       this.showAlert('Error', 'No se pudo eliminar el perfil', 'danger');
     }
