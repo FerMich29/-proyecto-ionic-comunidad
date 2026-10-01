@@ -1,59 +1,136 @@
-:host { display: block; }
+/* --- Paleta de colores profesional --- */
+$brand-gradient: linear-gradient(135deg, #ff4d6d, #c9184a);
+$brand-color: #c9184a;
+$bg-color: #f8f9fc;
+$card-bg: #ffffff;
+$input-bg: #f1f4f9;
+$text-dark: #2b2d42;
+$text-muted: #8d99ae;
 
-.card {
-  background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+.background-app {
+  --background: #{$bg-color};
 }
 
-.search-input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border: 1px solid #dcdfe4;
-  border-radius: 8px;
-  font-size: 0.95rem;
-  margin-bottom: 1.25rem;
-  box-sizing: border-box;
+.content-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
 
-  &:focus {
-    outline: none;
-    border-color: #6c5ce7;
-    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
+/* --- Cabecera --- */
+.header-title {
+  font-weight: 700;
+  color: $text-dark;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
+}
+
+/* --- Tarjetas --- */
+.premium-card {
+  background: $card-bg;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  margin-bottom: 24px;
+  border: 1px solid rgba(0,0,0,0.02);
+}
+
+.card-title {
+  font-weight: 800;
+  color: $text-dark;
+  font-size: 1.4rem;
+}
+
+.list-title {
+  text-align: left;
+  font-size: 1.2rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+/* --- Buscador Moderno --- */
+.modern-searchbar {
+  --background: #{$input-bg};
+  --border-radius: 14px;
+  --box-shadow: none;
+  --icon-color: #{$brand-color};
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 10px;
+  
+  ::ng-deep .searchbar-input {
+    font-weight: 500;
+    color: $text-dark;
   }
 }
 
-.perfil-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+/* --- Lista de Perfiles --- */
+.transparent-list {
+  background: transparent;
 }
 
-.perfil-card {
-  padding: 0.9rem 1rem;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  background: #fafafa;
-}
+.profile-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 12px;
+  border: 1px solid #f1f4f9;
+  border-radius: 16px;
+  padding: 8px 16px;
+  
+  .profile-name {
+    font-weight: 700;
+    color: $text-dark;
+    display: flex;
+    align-items: center;
+    font-size: 1.05rem;
+  }
 
-.perfil-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-
-  strong { color: #2c3e50; font-size: 0.95rem; }
-  .perfil-email { font-size: 0.8rem; color: #888; }
+  .profile-email {
+    color: $text-muted;
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
 }
 
 .badge-premium {
+  background: #ffb703;
+  color: #fff;
+  border-radius: 6px;
+  padding: 4px 6px;
   font-size: 0.7rem;
-  color: #e67e22;
-  font-weight: 600;
+  
+  ion-icon { margin-right: 2px; }
 }
 
+/* --- Empty State --- */
 .empty-state {
-  text-align: center;
-  color: #999;
+  color: $text-muted;
+  margin-top: 20px;
+  
+  .empty-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: $input-bg;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    
+    ion-icon {
+      font-size: 40px;
+      color: #cbd5e1;
+    }
+  }
+  
+  p { font-size: 1rem; line-height: 1.5; }
+}
+
+.banner-conexion {
+  background: #fff3cd;
+  color: #856404;
+  padding: 10px 16px;
+  border-radius: 10px;
   font-size: 0.85rem;
-  padding: 1rem 0;
+  text-align: center;
+  margin-bottom: 16px;
 }

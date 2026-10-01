@@ -2,19 +2,19 @@
   <div class="page">
     <div class="container">
       <div class="left">
+        <div class="brand-header">
+          <ion-icon name="finger-print-outline" class="brand-icon"></ion-icon>
+        </div>
         <div class="login">Login</div>
         <div class="eula">
-          Inicia sesión para entrar al directorio de la comunidad
+          Inicia sesión para entrar al directorio de la comunidad y acceder a tu perfil.
         </div>
       </div>
+
       <div class="right">
         <svg class="login-svg" viewBox="0 0 320 300">
           <defs>
-            <linearGradient
-              id="linearGradient"
-              x1="13" y1="193.49992" x2="307" y2="193.49992"
-              gradientUnits="userSpaceOnUse"
-            >
+            <linearGradient id="linearGradient" x1="13" y1="193.49992" x2="307" y2="193.49992" gradientUnits="userSpaceOnUse">
               <stop style="stop-color:#ff00ff;" offset="0" />
               <stop style="stop-color:#ff0000;" offset="1" />
             </linearGradient>
@@ -24,27 +24,57 @@
             d="m 40,120.00016 239.99984,-3.2e-4 c 0,0 24.99263,0.79932 25.00016,35.00016 0.008,34.20084 -25.00016,35 -25.00016,35 h -239.99984 c 0,-0.0205 -25,4.01348 -25,38.5 0,34.48652 25,38.5 25,38.5 h 215 c 0,0 20,-0.99604 20,-25 0,-24.00396 -20,-25 -20,-25 h -190 c 0,0 -20,1.71033 -20,25 0,24.00396 20,25 20,25 h 168.57143"
           />
         </svg>
+
         <form class="form" (submit)="handleLogin($event)">
           <label for="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            [(ngModel)]="email"
-            (focus)="animatePath(0, '240 1386')"
-          />
+          <input type="email" id="email" name="email" [(ngModel)]="email" (focus)="animatePath(0, '240 1386')" autocomplete="off" />
+          
           <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            [(ngModel)]="password"
-            (focus)="animatePath(-336, '240 1386')"
-          />
-          <p *ngIf="error" style="color:#ff8080; font-size:13px;">{{ error }}</p>
-          <input type="submit" id="submit" value="Submit" />
+          <input type="password" id="password" name="password" [(ngModel)]="password" (focus)="animatePath(-336, '240 1386')" />
+          
+          <p *ngIf="error" class="error-msg">{{ error }}</p>
+          
+          <input type="submit" id="submit" value="Ingresar" />
         </form>
+
+        <p class="toggle-link" (click)="setOpen(true)">¿No tienes cuenta? Regístrate aquí</p>
       </div>
     </div>
   </div>
+
+  <ion-modal [isOpen]="isModalOpen" (didDismiss)="setOpen(false)" class="register-modal">
+    <ng-template>
+      <ion-header class="ion-no-border">
+        <ion-toolbar style="--background: #ffffff;">
+          <ion-title class="modal-title">Nueva Cuenta</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="setOpen(false)" color="medium">
+              <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding" style="--background: #f8f9fc;">
+        <div class="modal-content">
+          <div class="icon-circle-modal">
+            <ion-icon name="person-add-outline"></ion-icon>
+          </div>
+          <p class="modal-subtitle">Crea tus credenciales para acceder</p>
+
+          <form (ngSubmit)="handleRegister($event)">
+            <ion-input class="modern-input" label="Correo Electrónico" labelPlacement="floating" type="email" name="regEmail" [(ngModel)]="regEmail" required></ion-input>
+            
+            <ion-input class="modern-input" label="Contraseña segura" labelPlacement="floating" type="password" name="regPassword" [(ngModel)]="regPassword" required></ion-input>
+            
+            <p *ngIf="regError" class="modal-error">{{ regError }}</p>
+            
+            <ion-button type="submit" expand="block" shape="round" class="btn-gradient ion-margin-top">
+              Registrarme e Ingresar
+            </ion-button>
+          </form>
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>

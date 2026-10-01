@@ -1,234 +1,154 @@
-:host {
-  display: block;
+/* --- Paleta de colores profesional --- */
+$brand-gradient: linear-gradient(135deg, #ff4d6d, #c9184a);
+$brand-color: #c9184a;
+$bg-color: #f8f9fc;
+$card-bg: #ffffff;
+$input-bg: #f1f4f9;
+$text-dark: #2b2d42;
+$text-muted: #8d99ae;
+
+.background-app {
+  --background: #{$bg-color};
 }
 
-.card {
-  background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+.content-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
 }
 
-.card-title {
-  font-size: 1.2rem;
+.header-title {
   font-weight: 700;
-  margin-bottom: 1.25rem;
-  color: #2c3e50;
+  color: $text-dark;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem 1.25rem;
+.premium-card {
+  background: $card-bg;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  margin-bottom: 20px;
+  border: 1px solid rgba(0,0,0,0.02);
 }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-
-  label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #666;
-    margin-bottom: 0.35rem;
-  }
-
-  input, select {
-    padding: 0.65rem 0.75rem;
-    border: 1px solid #dcdfe4;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    color: #2c3e50;
-    background: #f9fafb;
-    transition: border-color 150ms, box-shadow 150ms;
-
-    &:focus {
-      outline: none;
-      border-color: #6c5ce7;
-      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
-      background: white;
-    }
-  }
-
-  select[multiple] {
-    height: auto;
-  }
+/* --- Crear Publicación --- */
+.create-post-card {
+  padding: 10px 0;
 }
 
-.full-width {
-  grid-column: 1 / -1;
+.transparent-item {
+  --background: transparent;
 }
 
-.badge {
-  display: inline-block;
-  background: #6c5ce7;
-  color: white;
-  font-size: 0.75rem;
-  padding: 0.1rem 0.5rem;
-  border-radius: 999px;
-  margin-left: 0.3rem;
+.modern-textarea {
+  --background: #{$input-bg};
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --padding-top: 12px;
+  --padding-bottom: 12px;
+  --border-radius: 16px;
+  margin-left: 10px;
+  font-weight: 500;
+  color: $text-dark;
 }
 
-.color-row {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-
-  input[type="color"] {
-    width: 48px;
-    height: 40px;
-    padding: 0;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  .color-value {
-    font-size: 0.85rem;
-    color: #666;
-  }
-}
-
-.checkbox-group {
-  justify-content: center;
-}
-
-.checkbox-label, .radio-label {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.9rem;
-  color: #2c3e50;
-  cursor: pointer;
-
-  input {
-    width: 16px;
-    height: 16px;
-    accent-color: #6c5ce7;
-  }
-}
-
-.radio-row {
-  display: flex;
-  gap: 1.25rem;
-}
-
-.botonera {
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
-  margin-top: 0.5rem;
-}
-
-.btn-primary, .btn-secondary {
-  padding: 0.7rem 1.6rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  border: none;
-  cursor: pointer;
-  transition: opacity 150ms;
-
-  &:hover {
-    opacity: 0.85;
-  }
-}
-
-.btn-primary {
-  background: #6c5ce7;
-  color: white;
-}
-
-.btn-secondary {
-  background: #f1f2f6;
-  color: #2c3e50;
-}
-
-.perfil-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.perfil-card {
+.post-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.9rem 1rem;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  background: #fafafa;
+  padding: 0 16px 8px;
+  margin-top: 10px;
 }
 
-.perfil-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
+.action-btn-left {
+  --color: #{$text-muted};
+  font-weight: 600;
+  font-size: 0.9rem;
+}
 
-  strong {
-    color: #2c3e50;
-    font-size: 0.95rem;
+.btn-gradient-small {
+  --background: #{$brand-gradient};
+  --box-shadow: 0 4px 12px rgba(201, 24, 74, 0.3);
+  font-weight: 700;
+  height: 38px;
+}
+
+/* --- Feed de Publicaciones --- */
+.post-card {
+  padding-bottom: 5px;
+}
+
+.post-header {
+  --background: transparent;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  margin-top: 5px;
+
+  .post-author {
+    font-weight: 700;
+    color: $text-dark;
+    font-size: 1.05rem;
   }
 
-  .perfil-email {
+  .post-time {
+    color: $text-muted;
     font-size: 0.8rem;
-    color: #888;
+    margin-top: 3px;
   }
 }
 
-.badge-premium {
-  font-size: 0.7rem;
-  color: #e67e22;
-  font-weight: 600;
+.btn-more {
+  --padding-start: 0;
+  --padding-end: 0;
+  margin: 0;
 }
 
-.perfil-acciones {
+.post-content {
+  padding: 5px 20px 15px;
+  color: $text-dark;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.post-footer {
   display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
-}
-
-.btn-chip {
-  border: none;
-  border-radius: 999px;
-  padding: 0.35rem 0.8rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 150ms;
-
-  &:hover {
-    opacity: 0.85;
+  border-top: 1px solid #f1f4f9;
+  padding: 5px 10px;
+  
+  .interact-btn {
+    flex: 1;
+    --color: #{$text-muted};
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: none;
+    
+    ion-icon {
+      font-size: 1.2rem;
+      margin-right: 6px;
+    }
   }
 }
 
-.btn-chip.edit {
-  background: #dfe6ff;
-  color: #4054b2;
-}
-
-.btn-chip.toggle {
-  background: #fff3d6;
-  color: #b5860a;
-}
-
-.btn-chip.delete {
-  background: #ffe0e0;
-  color: #c0392b;
-}
-
+/* --- Empty State --- */
 .empty-state {
-  text-align: center;
-  color: #999;
-  font-size: 0.85rem;
-  padding: 1rem 0;
-}
-
-@media (max-width: 600px) {
-  .form-grid {
-    grid-template-columns: 1fr;
+  color: $text-muted;
+  margin-top: 40px;
+  
+  .empty-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: $input-bg;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    
+    ion-icon {
+      font-size: 40px;
+      color: #cbd5e1;
+    }
   }
+  
+  p { font-size: 1rem; line-height: 1.5; }
 }

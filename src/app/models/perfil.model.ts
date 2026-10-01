@@ -2,8 +2,8 @@
 // Refleja exactamente las columnas de la tabla `perfiles` en MySQL.
 
 export interface Perfil {
-  id?: number;               // autogenerado por la BD, no se envía al crear
-  fullname: string;
+  fullname: any;
+  id?: number;               
   password: string;
   email: string;
   phonenumber: string;
@@ -11,11 +11,11 @@ export interface Perfil {
   birthdate: string;         // formato 'YYYY-MM-DD'
   siblings: number;
   earnings: number;
-  color: string;             // hex, ej. '#ff0000'
-  premium: boolean | number; // la BD usa tinyint(1): 0 o 1
+  color: string;            
+  premium: boolean | number; 
   genre: string;
   studies: string;
-  languages: string[] | string; // en la BD se guarda como string separado por comas
+  languages: string[] | string; 
 }
 
 // Respuesta estándar de la API PHP para operaciones sobre un solo perfil

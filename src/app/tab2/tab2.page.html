@@ -1,29 +1,45 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="primary">
-    <ion-title>Buscar en el Directorio</ion-title>
+  <ion-toolbar>
+    <ion-title>Buscar Perfiles</ion-title>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-searchbar 
+      [(ngModel)]="busqueda"
+      placeholder="Buscar por email..." 
+      (ionInput)="cargarPerfiles()"
+      [debounce]="300">
+    </ion-searchbar>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="ion-padding">
-  <div class="card">
-    <input
-      type="text"
-      class="search-input"
-      placeholder="Buscar por nombre..."
-      [(ngModel)]="busqueda"
-      (input)="buscar()"
-    />
 
-    <div class="perfil-list">
-      <div *ngFor="let p of filtrados" class="perfil-card">
-        <div class="perfil-info">
-          <strong>{{ p.fullname }}</strong>
-          <span class="perfil-email">{{ p.email }}</span>
-          <span *ngIf="p.premium == 1" class="badge-premium">⭐ Destacado</span>
-        </div>
-      </div>
+  <div *ngIf="mensajeConexion" class="banner-conexion">
+    {{ mensajeConexion }}
+  </div>
 
-      <p *ngIf="filtrados.length === 0" class="empty-state">No se encontraron resultados.</p>
-    </div>
+  <div *ngIf="perfiles.length > 0">
+    <ion-card *ngFor="let perfil of perfiles">
+      <ion-item lines="none">
+        <ion-avatar slot="start">
+          <img [src]="perfil.avatar" alt="Avatar" />
+        </ion-avatar>
+        <ion-label>
+          <h2>{{ perfil.email }}</h2>
+          <p>ID de usuario: {{ perfil.id }}</p>
+        </ion-label>
+        <ion-button slot="end" fill="clear" (click)="toggleFavorito(perfil)">
+          <ion-icon 
+            [name]="perfil.esFavorito ? 'star' : 'star-outline'" 
+            [color]="perfil.esFavorito ? 'warning' : 'medium'"
+            slot="icon-only">
+          </ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-card>
+  </div>
+
+  <div *ngIf="perfiles.length === 0" class="ion-text-center ion-padding">
+    <p>No se encontraron perfiles.</p>
   </div>
 </ion-content>

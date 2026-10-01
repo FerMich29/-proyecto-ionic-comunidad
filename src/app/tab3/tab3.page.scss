@@ -1,118 +1,158 @@
-:host { display: block; }
+/* --- Paleta de colores profesional --- */
+$brand-gradient: linear-gradient(135deg, #ff4d6d, #c9184a);
+$brand-color: #c9184a;
+$bg-color: #f8f9fc;
+$card-bg: #ffffff;
+$input-bg: #f1f4f9;
+$text-dark: #2b2d42;
+$text-muted: #8d99ae;
 
-.card {
-  background: white;
-  border-radius: 16px;
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+.background-app {
+  --background: #{$bg-color};
+}
+
+.content-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* --- Cabecera --- */
+.header-title {
+  font-weight: 700;
+  color: $text-dark;
+  font-size: 1.2rem;
+  letter-spacing: -0.5px;
+}
+
+/* --- Tarjetas --- */
+.premium-card {
+  background: $card-bg;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
+  margin-bottom: 24px;
+  border: 1px solid rgba(0,0,0,0.02);
+}
+
+.icon-circle {
+  width: 64px;
+  height: 64px;
+  background: $brand-gradient;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  box-shadow: 0 8px 16px rgba(201, 24, 74, 0.2);
+  
+  ion-icon {
+    font-size: 32px;
+    color: white;
+  }
 }
 
 .card-title {
+  font-weight: 800;
+  color: $text-dark;
+  font-size: 1.4rem;
+}
+
+.list-title {
+  text-align: left;
   font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 1.25rem;
-  color: #2c3e50;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f0f0f0;
 }
 
-.form-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem 1.25rem;
+/* --- Inputs Modernos --- */
+.modern-input {
+  --background: #{$input-bg};
+  --padding-start: 16px;
+  --padding-end: 16px;
+  --border-radius: 14px;
+  --placeholder-color: #a0aabf;
+  margin-bottom: 12px;
+  font-weight: 500;
+  color: $text-dark;
 }
 
-.form-group {
+/* --- Botones --- */
+.action-buttons {
   display: flex;
   flex-direction: column;
+  gap: 8px;
+}
 
-  label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: #666;
-    margin-bottom: 0.35rem;
+.btn-gradient {
+  --background: #{$brand-gradient};
+  --box-shadow: 0 8px 20px rgba(201, 24, 74, 0.3);
+  margin-top: 10px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  height: 52px;
+}
+
+.btn-cancel {
+  --color: #{$text-muted};
+  font-weight: 600;
+}
+
+/* --- Lista de Favoritos --- */
+.transparent-list {
+  background: transparent;
+}
+
+.profile-item {
+  --background: transparent;
+  --padding-start: 0;
+  --inner-padding-end: 0;
+  margin-bottom: 12px;
+  border: 1px solid #f1f4f9;
+  border-radius: 16px;
+  padding: 8px 16px;
+  
+  .profile-name {
+    font-weight: 700;
+    color: $text-dark;
+    font-size: 1.05rem;
   }
 
-  input {
-    padding: 0.65rem 0.75rem;
-    border: 1px solid #dcdfe4;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    background: #f9fafb;
-    color: #2c3e50;   // 
+  .profile-email {
+    color: $text-muted;
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+}
 
-    &:focus {
-      outline: none;
-      border-color: #6c5ce7;
-      box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15);
-      background: white;
+/* Botones de acción en la lista */
+.action-chips ion-button {
+  --border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  margin: 0 2px;
+  
+  &.edit { --color: #4361ee; }
+  &.delete { --color: #ef233c; }
+}
+
+/* --- Empty State --- */
+.empty-state {
+  color: $text-muted;
+  
+  .empty-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    background: $input-bg;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    
+    ion-icon {
+      font-size: 40px;
+      color: #cbd5e1;
     }
   }
-}
-
-.full-width { grid-column: 1 / -1; }
-
-.botonera {
-  display: flex;
-  justify-content: center;
-  gap: 0.75rem;
-}
-
-.btn-primary, .btn-secondary {
-  padding: 0.7rem 1.6rem;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.9rem;
-  border: none;
-  cursor: pointer;
-}
-
-.btn-primary { background: #6c5ce7; color: white; }
-.btn-secondary { background: #f1f2f6; color: #2c3e50; }
-
-.perfil-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
-.perfil-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  padding: 0.9rem 1rem;
-  border: 1px solid #eee;
-  border-radius: 12px;
-  background: #fafafa;
-}
-
-.perfil-info {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
-
-  strong { color: #2c3e50; font-size: 0.95rem; }
-  .perfil-email { font-size: 0.8rem; color: #888; }
-}
-
-.perfil-acciones { display: flex; gap: 0.4rem; }
-
-.btn-chip {
-  border: none;
-  border-radius: 999px;
-  padding: 0.35rem 0.8rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  cursor: pointer;
-}
-
-.btn-chip.edit { background: #dfe6ff; color: #4054b2; }
-.btn-chip.delete { background: #ffe0e0; color: #c0392b; }
-
-.empty-state {
-  text-align: center;
-  color: #999;
-  font-size: 0.85rem;
-  padding: 1rem 0;
+  
+  p { font-size: 1rem; line-height: 1.5; }
 }
