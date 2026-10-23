@@ -1,0 +1,59 @@
+.edit-form {
+  max-width: 560px;   // responsivo: en tablet/escritorio no se estira
+  margin: 0 auto;
+}
+
+.foto-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.foto-wrapper {
+  position: relative;
+  width: clamp(110px, 36vw, 180px);   // se adapta al ancho del dispositivo
+  aspect-ratio: 1 / 1;
+  cursor: pointer;
+}
+
+.foto-preview,
+.foto-placeholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.foto-preview {
+  object-fit: cover;
+  border: 3px solid var(--ion-color-primary);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.foto-placeholder {
+  background: var(--ion-color-light);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ion-color-medium);
+  font-size: 0.9rem;
+
+  ion-icon { font-size: 2.2rem; }
+}
+
+.foto-badge {
+  position: absolute;
+  right: 4%;
+  bottom: 4%;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--ion-color-primary);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}

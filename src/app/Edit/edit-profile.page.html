@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/tab1"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Editar perfil</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngIf="form" class="edit-form">
+
+    <!-- Foto de perfil: cámara o galería -->
+    <div class="foto-container">
+      <div class="foto-wrapper" (click)="elegirOrigen()">
+        <img *ngIf="fotoPreview" [src]="fotoPreview" class="foto-preview" alt="Foto de perfil" />
+        <div *ngIf="!fotoPreview" class="foto-placeholder">
+          <ion-icon name="camera-outline"></ion-icon>
+          <span>Sin foto</span>
+        </div>
+        <span class="foto-badge"><ion-icon name="camera-outline"></ion-icon></span>
+      </div>
+
+      <ion-button fill="outline" size="small" (click)="elegirOrigen()">
+        <ion-icon name="camera-outline" slot="start"></ion-icon>
+        Cambiar foto
+      </ion-button>
+    </div>
+
+    <!-- Datos del perfil -->
+    <ion-item>
+      <ion-input label="Nombre completo" labelPlacement="stacked" [(ngModel)]="form.fullname" name="fullname"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Email" labelPlacement="stacked" type="email" [(ngModel)]="form.email" name="email"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Teléfono" labelPlacement="stacked" [(ngModel)]="form.phonenumber" name="phonenumber"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Fecha de nacimiento" labelPlacement="stacked" type="date" [(ngModel)]="form.birthdate" name="birthdate"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input label="Estudios" labelPlacement="stacked" [(ngModel)]="form.studies" name="studies"></ion-input>
+    </ion-item>
+
+    <ion-button expand="block" class="ion-margin-top" [disabled]="guardando" (click)="guardar()">
+      <ion-spinner *ngIf="guardando" name="dots"></ion-spinner>
+      <ng-container *ngIf="!guardando">
+        <ion-icon name="save-outline" slot="start"></ion-icon>
+        Guardar cambios
+      </ng-container>
+    </ion-button>
+  </div>
+</ion-content>

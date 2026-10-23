@@ -1,84 +1,71 @@
 <ion-header [translucent]="true" class="ion-no-border">
-  <ion-toolbar style="--background: rgba(255,255,255,0.9); backdrop-filter: blur(10px);">
-    <ion-title class="header-title">Comunidad Escolar</ion-title>
+  <ion-toolbar style="--background: #ffffff;">
+    <ion-title style="font-weight: 700; color: #2b2d42;">Comunidad Escolar</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="background-app">
-  <div class="content-wrapper ion-padding">
-    
-    <!-- Formulario Crear/Editar -->
-    <ion-card class="premium-card create-post-card">
-      <ion-item lines="none" class="transparent-item user-input-area">
-        <ion-avatar slot="start">
-          <img [src]="'https://i.pravatar.cc/150?u=' + (usuarioActual?.id || 1)" alt="Mi Avatar" />
+<ion-content [fullscreen]="true" style="--background: #f4f5f8;">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Directorio</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Barra de estado: verde = en línea, naranja = sincronizando, roja = sin conexión -->
+  <div [style.background]="!sync.online() ? '#e63946' : (sync.sincronizando() ? '#f4a261' : '#2a9d8f')"
+       style="position: sticky; top: 0; z-index: 10; color: white; padding: 10px 16px; font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
+    @if (!sync.online()) {
+      <ion-icon name="cloud-offline-outline"></ion-icon>
+      <span>Sin conexión · mostrando datos guardados
+        @if (sync.pendientes() > 0) { ({{ sync.pendientes() }} cambios pendientes) }
+      </span>
+    } @else if (sync.sincronizando()) {
+      <ion-icon name="sync-outline"></ion-icon>
+      <span>Sincronizando cambios...</span>
+    } @else {
+      <ion-icon name="cloud-done-outline"></ion-icon>
+      <span>En línea
+        @if (sync.ultimaSync()) { · última sincronización {{ sync.ultimaSync() }} }
+      </span>
+    }
+  </div>
+
+  <div style="padding: 10px;">
+    <!-- Mensaje si la lista está vacía -->
+    <div *ngIf="perfiles.length === 0" style="text-align: center; padding: 40px 20px; color: #8d99ae;">
+      <ion-icon name="person-circle-outline" style="font-size: 70px; color: #d1d5db;"></ion-icon>
+      <h3 style="font-weight: 600; color: #2b2d42; margin-top: 15px;">No hay perfiles aún</h3>
+      <p style="font-size: 14px;">La comunidad está vacía en este momento.</p>
+    </div>
+
+    <!-- Lista de tarjetas de perfil -->
+    <ion-card *ngFor="let perfil of perfiles" style="border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); background: #ffffff;">
+      <ion-item lines="none" style="--background: transparent; margin-top: 5px;">
+        <ion-avatar slot="start" style="width: 55px; height: 55px; border: 2px solid #ff4d6d;">
+          <img [src]="$any(perfil).avatar || ('https://i.pravatar.cc/150?u=' + perfil.id)" alt="Avatar">
         </ion-avatar>
-        <ion-textarea 
-          class="modern-textarea"
-          [placeholder]="editingId ? 'Editando publicación...' : '¿Qué está pasando en la escuela?'"
-          [autoGrow]="true"
-          rows="2"
-          [(ngModel)]="nuevaPublicacion">
-        </ion-textarea>
+
+        <ion-label>
+          <h2 style="font-weight: 700; color: #2b2d42; font-size: 17px; margin-bottom: 3px;">
+            {{ perfil.fullname || 'Usuario Sin Nombre' }}
+          </h2>
+          <p style="color: #6c757d; font-size: 13px;">{{ perfil.email }}</p>
+          <p style="color: #ff4d6d; font-weight: 600; font-size: 12px; margin-top: 3px;" *ngIf="perfil.studies">
+            {{ perfil.studies }}
+          </p>
+        </ion-label>
       </ion-item>
-      
-      <div class="post-actions">
-        <ion-button *ngIf="editingId" fill="clear" color="medium" size="small" (click)="resetForm()">
-          <ion-icon name="close-outline" slot="start"></ion-icon> Cancelar
-        </ion-button>
-        <ion-button shape="round" class="btn-gradient-small" (click)="guardar()" [disabled]="!nuevaPublicacion">
-          <ion-icon [name]="editingId ? 'save-outline' : 'send'" slot="end"></ion-icon> 
-          {{ editingId ? 'Guardar Cambios' : 'Publicar' }}
-        </ion-button>
-      </div>
-    </ion-card>
 
-    <!-- Listado de Publicaciones del Usuario -->
-    <div class="feed-container">
-      <ion-card *ngFor="let post of publicaciones" class="premium-card post-card">
-        
-        <ion-item lines="none" class="post-header">
-          <ion-avatar slot="start">
-            <img [src]="post.avatar" alt="Avatar" />
-          </ion-avatar>
-          <ion-label>
-            <h2 class="post-author">{{ post.autor }}</h2>
-            <p class="post-time">{{ post.fecha }}</p>
-          </ion-label>
-
-          <!-- Acciones de Editar y Eliminar -->
-          <div slot="end">
-            <ion-button fill="clear" color="primary" size="small" (click)="editar(post)">
-              <ion-icon name="create-outline" slot="icon-only"></ion-icon>
-            </ion-button>
-            <ion-button fill="clear" color="danger" size="small" (click)="eliminar(post.id)">
-              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-            </ion-button>
-          </div>
-        </ion-item>
-
-        <ion-card-content class="post-content">
-          {{ post.contenido }}
-        </ion-card-content>
-
-        <div class="post-footer">
-          <ion-button fill="clear" color="medium" class="interact-btn">
-            <ion-icon name="heart-outline" slot="start"></ion-icon> {{ post.likes || 0 }} Me gusta
+      <ion-card-content style="padding-top: 0; padding-bottom: 10px;">
+        <div style="display: flex; justify-content: flex-end; gap: 5px; margin-top: 5px;">
+          <ion-button fill="clear" color="medium" (click)="irAEditar(perfil.id)">
+            <ion-icon name="create-outline" slot="icon-only"></ion-icon>
           </ion-button>
-          <ion-button fill="clear" color="medium" class="interact-btn">
-            <ion-icon name="chatbubble-outline" slot="start"></ion-icon> Comentar
+          <ion-button fill="clear" color="danger" (click)="eliminarPerfil(perfil.id)">
+            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
           </ion-button>
         </div>
-        
-      </ion-card>
-    </div>
-
-    <div *ngIf="publicaciones.length === 0" class="empty-state ion-padding ion-text-center">
-      <div class="empty-icon-wrapper">
-        <ion-icon name="chatbubble-outline"></ion-icon>
-      </div>
-      <p>Aún no has publicado nada.<br><strong>¡Rompe el hielo!</strong></p>
-    </div>
-
+      </ion-card-content>
+    </ion-card>
   </div>
 </ion-content>

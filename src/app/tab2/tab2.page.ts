@@ -6,14 +6,17 @@ import {
   IonCard, IonItem, IonAvatar, IonLabel, IonButton, IonIcon
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
-import { star, starOutline, personOutline } from 'ionicons/icons';
+import { star, starOutline, personOutline, cameraOutline } from 'ionicons/icons';
+import { Router } from '@angular/router';
 import { Preferences } from '@capacitor/preferences';
 import { ConectividadService } from '../services/conectividad.service';
+import { PerfilService } from '../services/perfil.service';
 
 export interface Perfil {
   id: number;
   email: string;
   avatar: string;
+  photo?: string | null;
   esFavorito?: boolean;
 }
 
@@ -34,13 +37,15 @@ export class Tab2Page implements OnInit {
 
   perfiles: Perfil[] = [];
   busqueda: string = '';
-  mensajeConexion: string = ''; // 👈 nuevo: aviso visible al usuario
+  mensajeConexion: string = '';
 
   constructor(
     private cdr: ChangeDetectorRef,
-    private conectividad: ConectividadService // 👈 nuevo
+    private conectividad: ConectividadService,
+    private perfilService: PerfilService,
+    private router: Router
   ) {
-    addIcons({ star, starOutline, personOutline });
+    addIcons({ star, starOutline, personOutline, cameraOutline });
   }
 
   ngOnInit() {
@@ -55,6 +60,8 @@ export class Tab2Page implements OnInit {
     const favs = JSON.parse(localStorage.getItem('favoritos') || '[]');
     return lista.map((p) => ({
       ...p,
+      // Foto real subida desde la cámara/galería; si no tiene, avatar genérico
+      avatar: this.perfilService.urlFoto(p.photo) ?? `https://i.pravatar.cc/150?u=${p.id}`,
       esFavorito: favs.some((f: Perfil) => f.id === p.id),
     }));
   }
@@ -97,7 +104,7 @@ export class Tab2Page implements OnInit {
 
       if (data.success) {
         this.perfiles = this.aplicarFavoritos(data.data);
-        await this.guardarCache(data.data); // 👈 guarda copia de respaldo
+        await this.guardarCache(data.data); // guarda copia de respaldo
       } else {
         throw new Error(data.message || 'La API respondió con un error');
       }
@@ -110,6 +117,11 @@ export class Tab2Page implements OnInit {
     }
 
     this.cdr.detectChanges();
+  }
+
+  /** Abre la pantalla para cambiar la foto del perfil (cámara / galería) */
+  editarFoto(perfil: Perfil) {
+    this.router.navigate(['/edit-profile', perfil.id]);
   }
 
   toggleFavorito(perfil: Perfil) {

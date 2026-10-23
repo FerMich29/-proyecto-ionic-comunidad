@@ -13,5 +13,9 @@ export const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.routes').then((m) => m.routes),
+  },  {
+    path: 'edit-profile/:id',
+    loadComponent: () => import('./Edit/edit-profile.page').then((m) => m.EditProfilePage),
   },
+
 ];

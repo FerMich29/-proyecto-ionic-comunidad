@@ -16,6 +16,7 @@ export interface Perfil {
   genre: string;
   studies: string;
   languages: string[] | string; 
+  photo?: string | null;     // nombre del archivo de la foto en el servidor
 }
 
 // Respuesta estándar de la API PHP para operaciones sobre un solo perfil

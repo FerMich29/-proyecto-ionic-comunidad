@@ -3,11 +3,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import anime from 'animejs';
+
+import { ApiConfigService } from '../services/api-config.service';
 import { UsuarioService } from '../services/usuario.service';
 import { ConectividadService } from '../services/conectividad.service';
+
 import {
   IonContent, IonIcon, IonModal, IonHeader, IonToolbar,
-  IonTitle, IonButtons, IonButton, IonInput
+  IonTitle, IonButtons, IonButton, IonInput, IonItem
 } from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { fingerPrintOutline, personAddOutline, closeOutline } from 'ionicons/icons';
@@ -19,7 +22,7 @@ import { fingerPrintOutline, personAddOutline, closeOutline } from 'ionicons/ico
   standalone: true,
   imports: [
     IonContent, IonIcon, IonModal, IonHeader, IonToolbar,
-    IonTitle, IonButtons, IonButton, IonInput,
+    IonTitle, IonButtons, IonButton, IonInput, IonItem,
     CommonModule, FormsModule
   ],
 })
@@ -36,17 +39,44 @@ export class LoginPage implements OnInit {
   regPassword: string = '';
   regError: string = '';
 
+  // Variables para la IP Dinámica
+  serverIp: string = '';
+  mensajeConexion: string = '';
+  conexionExitosa: boolean = false;
+
   private currentAnim: anime.AnimeInstance | null = null;
 
   constructor(
     private router: Router,
     private usuarioService: UsuarioService,
-    private conectividad: ConectividadService
+    private conectividad: ConectividadService,
+    private apiConfig: ApiConfigService // Inyectamos el servicio aquí
   ) {
     addIcons({ fingerPrintOutline, personAddOutline, closeOutline });
   }
 
   ngOnInit() {}
+
+  // Se ejecuta automáticamente al abrir la pantalla
+  async ionViewWillEnter() {
+    this.serverIp = await this.apiConfig.getHost();
+  }
+
+  // Método para el botón "Probar Conexión"
+  async probarConexion() {
+    this.mensajeConexion = 'Probando conexión...';
+    this.conexionExitosa = false;
+    
+    const exitosa = await this.apiConfig.probarConexion(this.serverIp);
+    
+    if (exitosa) {
+      this.conexionExitosa = true;
+      this.mensajeConexion = '¡Conectado a XAMPP!';
+      await this.apiConfig.setHost(this.serverIp); // Guardamos la IP
+    } else {
+      this.mensajeConexion = 'Error: Revisa tu IP o el puerto';
+    }
+  }
 
   async setOpen(isOpen: boolean) {
     this.isModalOpen = isOpen;
@@ -71,7 +101,9 @@ export class LoginPage implements OnInit {
     if (e) e.preventDefault();
     this.error = '';
 
-    // 👇 NUEVO: revisa conexión ANTES de intentar nada
+    // Guardamos la IP configurada antes de intentar hacer login
+    await this.apiConfig.setHost(this.serverIp);
+
     const conectado = await this.conectividad.estaConectado();
     if (!conectado) {
       this.error = 'No tienes conexión a internet. Verifica tu red e intenta de nuevo.';
@@ -90,13 +122,16 @@ export class LoginPage implements OnInit {
       }
     } catch (err) {
       console.error(err);
-      this.error = 'No se pudo conectar con el servidor. Intenta más tarde.';
+      this.error = 'No se pudo conectar con el servidor. Revisa tu IP.';
     }
   }
 
   async handleRegister(e: Event) {
     e.preventDefault();
     this.regError = '';
+
+    // Guardamos la IP configurada antes de registrar
+    await this.apiConfig.setHost(this.serverIp);
 
     const conectado = await this.conectividad.estaConectado();
     if (!conectado) {
@@ -127,7 +162,7 @@ export class LoginPage implements OnInit {
       }
     } catch (err) {
       console.error(err);
-      this.regError = 'No se pudo conectar con el servidor.';
+      this.regError = 'No se pudo conectar con el servidor. Revisa tu IP.';
     }
   }
 }

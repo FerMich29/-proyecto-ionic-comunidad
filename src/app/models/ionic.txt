@@ -1,2 +1,8 @@
 ionic cap cpy
 ionic cap sync
+ionic cap 
+
+
+cd proyetoname
+ionic cap build android 
+ionic cao run android

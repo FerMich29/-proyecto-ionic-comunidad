@@ -28,6 +28,9 @@
           <h2>{{ perfil.email }}</h2>
           <p>ID de usuario: {{ perfil.id }}</p>
         </ion-label>
+        <ion-button slot="end" fill="clear" (click)="editarFoto(perfil)" aria-label="Cambiar foto">
+          <ion-icon name="camera-outline" color="primary" slot="icon-only"></ion-icon>
+        </ion-button>
         <ion-button slot="end" fill="clear" (click)="toggleFavorito(perfil)">
           <ion-icon 
             [name]="perfil.esFavorito ? 'star' : 'star-outline'" 

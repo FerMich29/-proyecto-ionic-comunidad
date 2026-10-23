@@ -1,6 +1,8 @@
 <ion-content [fullscreen]="true" [scrollY]="false">
   <div class="page">
     <div class="container">
+      
+      <!-- PANEL IZQUIERDO (Blanco) -->
       <div class="left">
         <div class="brand-header">
           <ion-icon name="finger-print-outline" class="brand-icon"></ion-icon>
@@ -9,8 +11,36 @@
         <div class="eula">
           Inicia sesión para entrar al directorio de la comunidad y acceder a tu perfil.
         </div>
+
+        <!-- INICIO CONFIGURACIÓN DE RED (IP DINÁMICA) -->
+        <div style="margin: 0 40px 20px 40px; padding: 15px; background: rgba(0,0,0,0.03); border-radius: 12px; border: 1px solid #eee;">
+          <h3 style="color: #333; margin-top: 0; font-size: 14px; font-weight: 700;">Configuración de Servidor</h3>
+          <p style="color: #666; font-size: 12px; margin-bottom: 10px;">
+            Ingresa la IP de tu laptop (XAMPP)
+          </p>
+          
+          <ion-item lines="none" style="--background: white; border-radius: 8px; border: 1px solid #ccc; --min-height: 35px;">
+            <ion-input 
+              [(ngModel)]="serverIp" 
+              placeholder="Ej: 192.168.1.151:80" 
+              style="color: #333; font-size: 14px; --padding-start: 10px;">
+            </ion-input>
+          </ion-item>
+          
+          <ion-button expand="block" (click)="probarConexion()" style="margin-top: 10px; --background: #2b2e38; --border-radius: 8px; height: 35px; font-size: 13px;">
+            Probar Conexión
+          </ion-button>
+          
+          <p *ngIf="mensajeConexion" 
+             [style.color]="conexionExitosa ? '#28a745' : '#dc3545'" 
+             style="font-size: 12px; font-weight: bold; text-align: center; margin-top: 10px; margin-bottom: 0;">
+            {{ mensajeConexion }}
+          </p>
+        </div>
+        <!-- FIN CONFIGURACIÓN DE RED -->
       </div>
 
+      <!-- PANEL DERECHO (Oscuro / Formulario) -->
       <div class="right">
         <svg class="login-svg" viewBox="0 0 320 300">
           <defs>
@@ -42,6 +72,7 @@
     </div>
   </div>
 
+  <!-- MODAL DE REGISTRO (Se queda igual) -->
   <ion-modal [isOpen]="isModalOpen" (didDismiss)="setOpen(false)" class="register-modal">
     <ng-template>
       <ion-header class="ion-no-border">
